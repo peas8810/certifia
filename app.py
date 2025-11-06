@@ -110,12 +110,17 @@ def gerar_qr_bytes(url):
     img = qr.make_image(fill_color="black", back_color="white")
     b = io.BytesIO(); img.save(b, format="PNG"); return b.getvalue()
 
+
 def make_pdf(d, logo_file):
     logo_bytes = logo_file.read() if logo_file else None
     qr_bytes = gerar_qr_bytes(d["qr_url"])
     pdf = CertPDF(orientation="L", unit="mm", format="A4")
-    pdf.add_page(); pdf.corpo(d, logo_bytes, qr_bytes)
-    return pdf.output(dest="S").encode("latin-1","ignore")
+    pdf.add_page()
+    pdf.corpo(d, logo_bytes, qr_bytes)
+    out = pdf.output(dest="S")
+    # fpdf2 retorna bytearray; converta para bytes e NÃO chame .encode() (já é bytes-like)
+    return bytes(out) if isinstance(out, (bytearray, memoryview)) else out
+
 
 def ui_generate(con):
     st.subheader("Gerar Certificado")
