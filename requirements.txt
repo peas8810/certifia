@@ -1,6 +1,6 @@
 
-streamlit==1.39.0
-fpdf2==2.7.9
-qrcode==7.4.2
-Pillow==10.4.0
-pandas==2.2.3
+streamlit
+fpdf2
+qrcode
+Pillow
+pandas
